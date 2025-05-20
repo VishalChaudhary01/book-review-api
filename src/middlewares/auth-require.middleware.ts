@@ -3,7 +3,7 @@ import { UnauthorizedError } from "@/errors/unauthorize.error";
 import { verifyJwt } from "@/utils/jwt";
 import { Request, Response, NextFunction } from "express";
 
-export const authMiddleware = (
+export const authRequire = (
   req: Request,
   _res: Response,
   next: NextFunction,

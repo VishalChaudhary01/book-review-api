@@ -1,3 +1,4 @@
+import { Router } from "express";
 import {
   createBook,
   deleteBook,
@@ -5,13 +6,13 @@ import {
   getBookById,
   updateBook,
 } from "@/controllers/book.controller";
-import { Router } from "express";
+import { authRequire } from "@/middlewares/auth-require.middleware";
 
 const bookRoutes = Router();
 
-bookRoutes.post("/", createBook);
-bookRoutes.put("/:id", updateBook);
-bookRoutes.delete("/:id", deleteBook);
+bookRoutes.post("/", authRequire, createBook);
+bookRoutes.put("/:id", authRequire, updateBook);
+bookRoutes.delete("/:id", authRequire, deleteBook);
 
 bookRoutes.get("/", getAllBooks);
 bookRoutes.get("/:id", getBookById);
