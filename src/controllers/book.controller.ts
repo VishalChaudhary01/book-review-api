@@ -9,12 +9,25 @@ import {
   updateBookSchema,
 } from "@/validators/book.validator";
 
-export const createBook = async (req: Request, res: Response) => {
-  const userId = req.user?.id;
+export const getUserIdService = async (userId: string | undefined) => {
   if (!userId) {
     throw new UnauthorizedError("Unauthorized");
   }
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: {
+      id: true,
+    },
+  });
+  if (!user) {
+    throw new UnauthorizedError("Unauthorized");
+  }
 
+  return user.id;
+};
+
+export const createBook = async (req: Request, res: Response) => {
+  const userId = await getUserIdService(req.user?.id);
   const data = createBookSchema.parse(req.body);
 
   const book = await prisma.book.create({
@@ -32,10 +45,7 @@ export const createBook = async (req: Request, res: Response) => {
 
 export const updateBook = async (req: Request, res: Response) => {
   const bookId = req.params.id;
-  const userId = req.user?.id;
-  if (!userId) {
-    throw new UnauthorizedError("Unauthorized");
-  }
+  const userId = await getUserIdService(req.user?.id);
 
   const data = updateBookSchema.parse(req.body);
 
@@ -60,10 +70,7 @@ export const updateBook = async (req: Request, res: Response) => {
 
 export const deleteBook = async (req: Request, res: Response) => {
   const bookId = req.params.id;
-  const userId = req.user?.id;
-  if (!userId) {
-    throw new UnauthorizedError("Unauthorize");
-  }
+  const userId = await getUserIdService(req.user?.id);
 
   const book = await prisma.book.findUnique({
     where: { id: bookId },

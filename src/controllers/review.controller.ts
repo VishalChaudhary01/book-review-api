@@ -8,9 +8,10 @@ import {
   updateReviewSchema,
 } from "@/validators/review.validator";
 import { Request, Response } from "express";
+import { getUserIdService } from "./book.controller";
 
 export const createReview = async (req: Request, res: Response) => {
-  const userId = req.user?.id;
+  const userId = await getUserIdService(req.user?.id);
   const bookId = req.params.id;
 
   if (!userId) {
@@ -44,7 +45,7 @@ export const createReview = async (req: Request, res: Response) => {
 };
 
 export const updateReview = async (req: Request, res: Response) => {
-  const userId = req.user?.id;
+  const userId = await getUserIdService(req.user?.id);
   const reviewId = req.params.id;
 
   if (!userId) {
@@ -77,7 +78,7 @@ export const updateReview = async (req: Request, res: Response) => {
 };
 
 export const deleteReview = async (req: Request, res: Response) => {
-  const userId = req.user?.id;
+  const userId = await getUserIdService(req.user?.id);
   const reviewId = req.params.id;
 
   if (!userId) throw new UnauthorizedError("Unauthorized");
