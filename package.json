@@ -13,6 +13,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@prisma/client": "^6.8.2",
     "bcryptjs": "^3.0.2",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
@@ -29,6 +30,7 @@
     "@types/module-alias": "^2.0.4",
     "@types/node": "^22.15.14",
     "dotenv-cli": "^8.0.0",
+    "prisma": "^6.8.2",
     "tsc-watch": "^6.2.1",
     "typescript": "^5.8.3"
   },
