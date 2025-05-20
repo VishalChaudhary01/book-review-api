@@ -9,16 +9,22 @@ import {
 } from "@/validators/review.validator";
 import { Request, Response } from "express";
 import { getUserIdService } from "./book.controller";
+import { ErrorCode } from "@/enums/error-code.enum";
 
 export const createReview = async (req: Request, res: Response) => {
   const userId = await getUserIdService(req.user?.id);
   const bookId = req.params.id;
 
-  if (!userId) {
-    throw new UnauthorizedError("Unauthorized");
+  const data = createReviewSchema.parse(req.body);
+
+  const book = await prisma.book.findUnique({
+    where: { id: bookId },
+  });
+
+  if (!book) {
+    throw new NotFoundError("Book Not found", ErrorCode.BOOK_NOT_FOUND);
   }
 
-  const data = createReviewSchema.parse(req.body);
   const existingReview = await prisma.review.findFirst({
     where: {
       bookId,
@@ -48,10 +54,6 @@ export const updateReview = async (req: Request, res: Response) => {
   const userId = await getUserIdService(req.user?.id);
   const reviewId = req.params.id;
 
-  if (!userId) {
-    throw new UnauthorizedError("Unauthorized");
-  }
-
   const data = updateReviewSchema.parse(req.body);
 
   const existingReview = await prisma.review.findUnique({
@@ -59,7 +61,7 @@ export const updateReview = async (req: Request, res: Response) => {
   });
 
   if (!existingReview) {
-    throw new NotFoundError("Review not found");
+    throw new NotFoundError("Review not found", ErrorCode.REVIEW_NOT_FOUND);
   }
 
   if (existingReview.userId !== userId) {
@@ -81,14 +83,12 @@ export const deleteReview = async (req: Request, res: Response) => {
   const userId = await getUserIdService(req.user?.id);
   const reviewId = req.params.id;
 
-  if (!userId) throw new UnauthorizedError("Unauthorized");
-
   const existingReview = await prisma.review.findUnique({
     where: { id: reviewId },
   });
 
   if (!existingReview) {
-    throw new NotFoundError("Review not found");
+    throw new NotFoundError("Review not found", ErrorCode.REVIEW_NOT_FOUND);
   }
 
   if (existingReview.userId !== userId) {

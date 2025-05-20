@@ -7,6 +7,7 @@ import {
   updateBook,
 } from "@/controllers/book.controller";
 import { authRequire } from "@/middlewares/auth-require.middleware";
+import { createReview } from "@/controllers/review.controller";
 
 const bookRoutes = Router();
 
@@ -16,5 +17,8 @@ bookRoutes.delete("/:id", authRequire, deleteBook);
 
 bookRoutes.get("/", getAllBooks);
 bookRoutes.get("/:id", getBookById);
+
+// Add review to a book
+bookRoutes.post("/:id/reviews", authRequire, createReview);
 
 export default bookRoutes;

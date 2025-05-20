@@ -204,6 +204,14 @@ export const getAllBooks = async (req: Request, res: Response) => {
             email: true,
           },
         },
+        reviews: {
+          select: {
+            id: true,
+            rating: true,
+            comment: true,
+            createdAt: true,
+          },
+        },
       },
     }),
     prisma.book.count({ where }),
