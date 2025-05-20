@@ -1,0 +1,38 @@
+{
+  "name": "book-review-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "npm run clean && tsc",
+    "start": "dotenv -- npm run build && node dist/index.js",
+    "dev": "dotenv -- tsc-watch --onsuccess \"node dist/index.js\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "module-alias": "^2.2.3",
+    "zod": "^3.24.4"
+  },
+  "devDependencies": {
+    "@tsconfig/node20": "^20.1.5",
+    "@types/bcrypt": "^5.0.2",
+    "@types/express": "^5.0.1",
+    "@types/jsonwebtoken": "^9.0.9",
+    "@types/module-alias": "^2.0.4",
+    "@types/node": "^22.15.14",
+    "dotenv-cli": "^8.0.0",
+    "tsc-watch": "^6.2.1",
+    "typescript": "^5.8.3"
+  },
+  "_moduleAliases": {
+    "@": "./dist"
+  }
+}
